@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Pure Vanilla SMP — Minecraft сервер без правил</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0b0e14;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: #e4e7ed;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* HERO */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+            background: radial-gradient(ellipse at 50% 0%, #1a2a2a 0%, #0b0e14 80%);
+            border-bottom: 2px solid #2a3a3a;
+        }
+
+        .hero .badge {
+            display: inline-block;
+            background: #1f3a3a;
+            color: #7fc9c9;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 6px 18px;
+            border-radius: 30px;
+            border: 1px solid #2f5a5a;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 800;
+            background: linear-gradient(to right, #e4e7ed, #a0d4d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .hero p.sub {
+            font-size: 22px;
+            color: #aab4be;
+            margin-top: 16px;
+            font-weight: 300;
+        }
+
+        .hero .ip-box {
+            margin-top: 32px;
+            background: #141c1c;
+            border: 1px solid #2a3f3f;
+            border-radius: 60px;
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 8px 8px 28px;
+            gap: 16px;
+            backdrop-filter: blur(4px);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .hero .ip-box span {
+            font-size: 22px;
+            font-weight: 600;
+            color: #bfd9d9;
+            letter-spacing: 0.5px;
+        }
+
+        .hero .ip-box .copy-btn {
+            background: #2a4a4a;
+            border: none;
+            color: #e4e7ed;
+            font-weight: 600;
+            padding: 10px 28px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 15px;
+        }
+
+        .hero .ip-box .copy-btn:hover {
+            background: #3a6a6a;
+            transform: scale(1.02);
+        }
+
+        .hero .version-tag {
+            margin-top: 24px;
+            font-size: 15px;
+            color: #7a8f8f;
+        }
+
+        .hero .version-tag strong {
+            color: #b5d0d0;
+        }
+
+        /* FEATURES */
+        .features {
+            padding: 70px 0 50px;
+        }
+
+        .features h2 {
+            font-size: 36px;
+            text-align: center;
+            font-weight: 700;
+            color: #d0dce6;
+            margin-bottom: 12px;
+        }
+
+        .features .subh {
+            text-align: center;
+            color: #7a8f8f;
+            font-size: 18px;
+            margin-bottom: 48px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 28px;
+        }
+
+        .feature-card {
+            background: #121a1a;
+            border: 1px solid #1f2f2f;
+            border-radius: 20px;
+            padding: 30px 24px;
+            transition: 0.25s;
+        }
+
+        .feature-card:hover {
+            border-color: #3a6a6a;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 30, 30, 0.5);
+        }
+
+        .feature-card .icon {
+            font-size: 38px;
+            margin-bottom: 12px;display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: #c8d8d8;
+        }
+
+        .feature-card p {
+            color: #8a9f9f;
+            font-size: 15px;
+        }
+
+        /* NO RULES */
+        .rules-section {
+            background: #0f1515;
+            border-top: 1px solid #1a2a2a;
+            border-bottom: 1px solid #1a2a2a;
+            padding: 60px 0;
+        }
+
+        .rules-section h2 {
+            font-size: 32px;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .rules-section .center {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #8a9f9f;
+            font-size: 18px;
+        }
+
+        .rules-section .highlight {
+            color: #b5d0d0;
+            font-weight: 600;
+        }
+
+        /* FAR LANDS */
+        .farlands {
+            padding: 60px 0;
+        }
+
+        .farlands .row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .farlands .text {
+            flex: 1 1 300px;
+        }
+
+        .farlands .text h2 {
+            font-size: 34px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #d0dce6;
+        }
+
+        .farlands .text p {
+            color: #8a9f9f;
+            font-size: 17px;
+            margin-bottom: 12px;
+        }
+
+        .farlands .badge-far {
+            display: inline-block;
+            background: #1a2a1a;
+            color: #8fc9a0;
+            border: 1px solid #2f5a3a;
+            border-radius: 30px;
+            padding: 4px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+
+        .farlands .image-placeholder {
+            flex: 1 1 300px;
+            background: #111a1a;
+            border: 1px dashed #2a4a3a;
+            border-radius: 24px;
+            padding: 60px 30px;
+            text-align: center;
+            color: #4a6a5a;
+            font-size: 18px;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .farlands .image-placeholder .big {
+            font-size: 48px;
+        }
+
+        /* SERVER INFO */
+        .server-info {
+            background: #0f1515;
+            padding: 50px 0;
+            border-top: 1px solid #1a2a2a;
+            border-bottom: 1px solid #1a2a2a;
+        }
+
+        .server-info .cols {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px 80px;
+        }
+
+        .server-info .col {
+            text-align: center;
+        }
+
+        .server-info .col .label {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #5a7a7a;
+        }
+
+        .server-info .col .value {
+            font-size: 26px;
+            font-weight: 700;
+            color: #c8d8d8;
+            margin-top: 4px;
+        }
+
+        /* VOTE */
+        .vote {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .vote h2 {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .vote p {
+            color: #7a8f8f;
+            font-size: 18px;
+            margin-bottom: 32px;
+        }
+
+        .vote .btn {
+            background: #2a4a4a;
+            border: none;
+            color: #e4e7ed;
+            font-weight: 700;
+            font-size: 18px;
+            padding: 16px 48px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .vote .btn:hover {
+            background: #3a6a6a;transform: scale(1.03);
+        }
+
+        /* FOOTER */
+        .footer {
+            border-top: 1px solid #1a1a1a;
+            padding: 30px 0;
+            text-align: center;
+            color: #4a5a5a;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #6a9a9a;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .footer a:hover {
+            color: #8ababa;
+        }
+
+        .footer .links {
+            margin-top: 6px;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 38px; }
+            .hero .ip-box { padding: 16px 20px; }
+            .hero .ip-box span { font-size: 18px; }
+            .features h2 { font-size: 28px; }
+            .farlands .text h2 { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <div class="badge">🔥 Анархия • Ванила • Без правил</div>
+            <h1>Pure Vanilla SMP</h1>
+            <p class="sub">Играй в Minecraft так, как хочешь ты</p>
+
+            <div class="ip-box">
+                <span>109.236.57.55:33000</span>
+                <button class="copy-btn" onclick="copyIP()">📋 Копировать</button>
+            </div>
+
+            <div class="version-tag">
+                <strong>Java</strong> + <strong>Bedrock</strong> &nbsp;·&nbsp; Любые версии &nbsp;·&nbsp; Кроссплей
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features">
+        <div class="container">
+            <h2>Что тебя ждёт</h2>
+            <p class="subh">Никаких ограничений — только Minecraft в его чистом виде</p>
+
+            <div class="grid-3">
+                <div class="feature-card">
+                    <span class="icon">⚔️</span>
+                    <h3>Анархия</h3>
+                    <p>Никаких правил. Гриферь, строй, воюй, создавай кланы. Модераторов нет — всё зависит только от тебя.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🌍</span>
+                    <h3>Дальние Земли</h3>
+                    <p>Особая генерация мира на границах карты. Ландшафт там создаёт причудливые формы — найди их и спрячь базу.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">💎</span>
+                    <h3>Чистая ванила</h3>
+                    <p>Без доната, приватов, магазинов и лишних плагинов. Только механики Minecraft — как задумано.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">📱</span>
+                    <h3>Java + Bedrock</h3>
+                    <p>Заходи с компьютера, телефона или консоли. Кроссплей работает, все версии поддерживаются.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🌀</span>
+                    <h3>/spawn</h3>
+                    <p>Единственная команда — чтобы быстро вернуться в центр мира. Всё остальное — чистое выживание.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="icon">🔄</span>
+                    <h3>24/7 + бэкапы</h3>
+                    <p>Сервер работает круглосуточно, мир сохраняется даже после самых жёстких войн.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NO RULES -->
+    <section class="rules-section">
+        <div class="container">
+            <h2>🚫 Здесь нет правил</h2>
+            <div class="center">
+                <p>
+                    <span class="highlight">Можно всё.</span> Строить, разрушать, воевать, объединяться,
+                    прятаться на Дальних Землях, создавать ловушки — или просто выживать в тишине.
+                </p>
+                <p style="margin-top: 12px;">Никто не скажет тебе, что нельзя.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAR LANDS -->
+    <section class="farlands">
+    <div class="container">
+        <div class="row">
+            <div class="text">
+                <span class="badge-far">🌍 Легендарная генерация</span>
+                <h2>Дальние Земли (Far Lands)</h2>
+                <p>
+                    <strong>Это не острова.</strong> Это особая генерация мира, которая появляется 
+                    на границах старых версий Minecraft. Ландшафт там начинает искажаться, 
+                    создавая невероятные и причудливые формы рельефа.
+                </p>
+                <p>
+                    На нашем сервере мир сгенерирован так, чтобы ты мог исследовать эти земли, 
+                    прятать там базы и находить уникальные места, которых нет больше нигде.
+                </p>
+                <p style="color: #b5d0d0;">
+                    ⚡ Только здесь: Far Lands, доступные для исследования.
+                </p>
+            </div>
+            <div class="image-placeholder">
+                <img src="img/farlands.png" alt="Дальние Земли в Minecraft" style="width:100%; border-radius:16px;">
+                <span style="color:#6a9a9a; font-size:14px; margin-top:8px; display:block;">Легендарные Far Lands</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- SERVER INFO -->
+    <section class="server-info">
+        <div class="container">
+            <div class="cols">
+                <div class="col">
+                    <div class="label">IP-адрес</div>
+                    <div class="value">109.236.57.55:33000</div>
+                </div>
+                <div class="col">
+                    <div class="label">Версии</div>
+                    <div class="value">Любые</div>
+                </div>
+                <div class="col">
+                    <div class="label">Платформы</div>
+                    <div class="value">Java + Bedrock</div>
+                </div>
+                <div class="col">
+                    <div class="label">Режим</div>
+                    <div class="value">Выживание</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VOTE -->
+    <section class="vote">
+        <div class="container">
+            <h2>🗳️ Поддержи сервер</h2>
+            <p>Проголосуй — и получи награду в игре! Алмазы, незерит и опыт ждут тебя.</p>
+            <a href="https://minecraftrating.ru/vote/398838/" class="btn">Перейти к голосованию</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <p>Pure Vanilla SMP &bull; 2026 &bull; Сделано с ❤️ для настоящих выживальщиков</p>
+            <div class="links">
+                <a href="#">Группа ВК</a>
+                <a href="#">Discord</a>
+                <a href="#">Telegram</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyIP() {
+            const ip = "109.236.57.55:33000";
+            navigator.clipboard.writeText(ip).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const old = btn.textContent;
+                btn.textContent = '✅ Скопировано!';
+                setTimeout(() => btn.textContent = old, 2000);
+            });
+        }
+    </script>
+
+</body>
+</html>
